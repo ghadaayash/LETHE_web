@@ -28,7 +28,7 @@
 <div class="row">
     <div class="col-md-4">
         <h4>Upload Ontology</h4><br/>
-<form:form modelAttribute="uploadItem" name="frm" method="post"
+<form:form commandName="uploadItem" name="frm" method="post"
            enctype="multipart/form-data" onSubmit="return Validate();">
     <fieldset><legend>Upload File</legend>
         <table>
@@ -53,10 +53,12 @@
         %>
         <h3>Uploaded File</h3>
         <br>
-        <img
-                src="<%=request.getSession().getServletContext().getRealPath("/") + "/upload/"
+       <!-- <img
+                src="<%="/Users/Ghada/IdeaProjects/LETHE_web/upload/"
 						+ session.getAttribute("uploadFile")%>"
-                alt="Upload Image" />
+                alt="Upload Image" />-->
+
+        <p><%=session.getAttribute("uploadFile")%></p>
         <%
                 session.removeAttribute("uploadFile");
             }

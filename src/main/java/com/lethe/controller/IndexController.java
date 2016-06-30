@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by Ghada on 6/29/16.
  */
 
+/*
 @Controller
 public class IndexController {
     @RequestMapping("/index")
@@ -14,3 +15,4 @@ public class IndexController {
         return "index";
     }
 }
+*/

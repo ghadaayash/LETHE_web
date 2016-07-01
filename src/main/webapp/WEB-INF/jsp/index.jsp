@@ -40,28 +40,24 @@
             <tr>
                 <td><br />
                 </td>
-                <td><input type="submit" value="Upload" /></td>
+                <td><input type="submit" value="Upload" name="upload"/></td>
             </tr>
         </table>
     </fieldset>
 </form:form>
         <br>
         <br>
-        <%
-            if (session.getAttribute("uploadFile") != null
-                    && !(session.getAttribute("uploadFile")).equals("")) {
-        %>
-        <h3>Uploaded File</h3>
-        <br>
-       <!-- <img
-                src="<%="/Users/Ghada/IdeaProjects/LETHE_web/upload/"
-						+ session.getAttribute("uploadFile")%>"
-                alt="Upload Image" />-->
 
-        <p><%=session.getAttribute("uploadFile")%></p>
-        <%
-                session.removeAttribute("uploadFile");
-            }
-        %>
+        <h3>Uploaded File</h3>
+       <c:out value="${uploadFile}"/>
         </div>
+    <div class="col-md-4">
+        <form:form commandName="uploadItem" name="frm" method="post" action="/entities.html">
+            <input type="submit" value="Show Entities" name="showEntities"/>
+        </form:form>
+        <br><br>
+        <c:forEach items="${owlEntities}" var="each" varStatus="loop">
+            <c:out value="${each}"/>
+        </c:forEach>
+    </div>
     </div>

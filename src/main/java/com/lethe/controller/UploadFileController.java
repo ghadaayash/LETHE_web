@@ -7,10 +7,12 @@ import java.io.OutputStream;
 import com.lethe.form.UploadItem;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileOutputStream;
+import java.util.Set;
 
 /**
  * Created by ghadahalghamdi on 30/06/2016.
@@ -49,10 +52,10 @@ public class UploadFileController {
         return "index";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, params = "upload")
     public String create(@ModelAttribute("uploadItem") UploadItem uploadItem, BindingResult result,
                          HttpServletRequest request, HttpServletResponse response,
-                         HttpSession session) {
+                         ModelMap modelMap) {
         if (result.hasErrors()) {
             for (ObjectError error : result.getAllErrors()) {
                 System.err.println("Error: " + error.getCode() + " - "
@@ -86,6 +89,7 @@ public class UploadFileController {
                 outputStream = new FileOutputStream(fileName);
                 System.out.println("fileName:" + file.getOriginalFilename());
                 System.out.println("Number of Axioms: "+ ontology.getAxiomCount());
+                uploadItem.setOwlOntology(ontology);
                 int readBytes = 0;
                 byte[] buffer = new byte[10000];
                 while ((readBytes = inputStream.read(buffer, 0, 10000)) != -1) {
@@ -96,13 +100,23 @@ public class UploadFileController {
             }
 
             // ..........................................
-            session.setAttribute("uploadFile", ontology);
+            modelMap.addAttribute("uploadFile", ontology);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "index";
     }
 
+  /*  @RequestMapping(value = "/entities", method = RequestMethod.POST, params = "showEntities")
+    public String showEntities(UploadItem uploadItem, BindingResult result,
+                         HttpServletRequest request, HttpServletResponse response,
+                         ModelMap modelMap) {
+        OWLOntology ontology = (OWLOntology) modelMap.get("uploadFile");
+        Set<OWLEntity> owlEntitySet = uploadItem.getOwlEntities();
+        owlEntitySet = ontology.getSignature();
 
+        modelMap.addAttribute("owlEntities", owlEntitySet);
+        return "index";
+    }*/
 
     }

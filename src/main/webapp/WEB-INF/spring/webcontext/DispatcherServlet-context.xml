@@ -11,7 +11,8 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-    <mvc:annotation-driven/>
+    <!--<mvc:annotation-driven />-->
+    <mvc:annotation-driven conversion-service="conversionService"/>
     <context:component-scan base-package="com.lethe.controller"/>
 
     <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
@@ -35,7 +36,23 @@
     <!-- Configure the multipart resolver -->
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-
+        <property name="maxInMemorySize" value="999999999"/>
     </bean>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean" >
+        <property name="converters">
+            <set>
+                <bean class="com.lethe.conversion.StringToUploadItem"/>
+            </set>
+        </property>
+    </bean>
+
+    <!--<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+    <property name="customEditors">
+        <map>
+            <entry key="com.lethe.conversion.StringToUploadItem" value="com.lethe.conversion.StringToUploadItem"/>
+        </map>
+    </property>
+    </bean>-->
 
 </beans>

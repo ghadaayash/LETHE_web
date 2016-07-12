@@ -36,33 +36,17 @@ public class EntitiesController {
     OntologyFile ss = new OntologyFile();
     ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 
-
-    @RequestMapping(value = "/entities", method = RequestMethod.POST, params = "showEntities")
-    public String showEntities(@ModelAttribute("formBackingObjects") FormBackingObjects formBackingObjects, BindingResult result,
-                               HttpServletRequest request, HttpServletResponse response,
-                               ModelMap modelMap, HttpSession session) {
-        Set<OWLOntology> ontologies = new HashSet<>();
-        OWLOntology ontology = (OWLOntology) modelMap.get("uploadFile");
-        ontologies.add(ontology);
-        b = new BidirectionalShortFormProviderAdapter(ontologies, shortFormProvider);
-        Set<OWLEntity> owlEntitySet;
-        owlEntitySet = ontology.getSignature();
-        formBackingObjects.setOwlEntities(owlEntitySet);
-        session.setAttribute("b",b);
-        session.setAttribute("ss",ss);
-        modelMap.addAttribute("owlEntitiestems", formBackingObjects.getOwlEntities());
-        return "UniformInterpolation";
-    }
-
     @RequestMapping(value = "/selectedEntities", method = RequestMethod.POST, params="processForm")
     public String processEntities(@ModelAttribute("formBackingObjects") FormBackingObjects formBackingObjects, BindingResult result,
                                   HttpServletRequest request, HttpServletResponse response,
                                   ModelMap modelMap){
 
         List<String> selectedStr = formBackingObjects.getSelectedStr();
-        Set<OWLOntology> ontologies = new HashSet<>();
+        //Set<OWLOntology> ontologies = new HashSet<>();
         OWLOntology ontology = (OWLOntology) modelMap.get("uploadFile");
-        ontologies.add(ontology);
+        //ontologies.add(ontology);
+        //new
+        BidirectionalShortFormProviderAdapter b = (BidirectionalShortFormProviderAdapter) modelMap.get("b");
         Set<OWLEntity> entities = ss.entityForm(b,selectedStr);
         System.out.println("String type: " + selectedStr);
         System.out.println("Entity type: " + entities);

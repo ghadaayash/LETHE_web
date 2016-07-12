@@ -70,9 +70,9 @@
 
 
 <!-- Second ROW -->
-<div class="row rowFullWidth">
+<div class="row">
     <!-- signatures box -->
-    <div class="col-md-4"><br/><br><br>
+    <div class="col-md-2"><br/><br><br>
         <h4>Select Signature</h4>
         <form:form commandName="formBackingObjects" id="frm3" name="frm3" method="post" action="/selectedEntities.html">
         <form:errors path="*"/>
@@ -99,7 +99,7 @@
 
         </div>
     <div class="col-md-4">
-        <br><br><br><br>
+        <br><br><br>
         <form:form commandName="formBackingObjects" name="frm2" method="post" action="/entities.html">
             <input class="btn btn-secondary" type="submit" value="Show Entities" name="showEntities"/>
         </form:form>
@@ -107,16 +107,9 @@
 
     </div>
 
-    <div class="col-md-8">
-
-<br><br>
-
-
-
-
-        <br>
-
-        <div style="border-radius: 25px; height:550px;width:780px;border:1px solid #ccc;font:14px/24px Courier New, Courier, monospace;overflow:auto; background-color:#fff">
+    <div class="col-md-4">
+        <br><br><br><h4>Resulted Ontology</h4>
+        <div style="border-radius: 25px; height:550px;width:400px;border:1px solid #ccc;font:14px/24px Courier New, Courier, monospace;overflow:auto; background-color:#fff">
             <c:out value="${resultedOntology}"/>
         </div>
 
@@ -124,9 +117,25 @@
 
 <!-- Third ROW -->
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-2">
 
-
+        <form:form commandName="formBackingObjects" name="frm1" method="post"
+                   enctype="multipart/form-data" onSubmit="return Validate();">
+            <fieldset><legend>Upload Ontology</legend>
+                <table>
+                    <tr>
+                        <td><form:label for="fileData" path="fileData">File</form:label><br />
+                        </td>
+                        <td><form:input path="fileData" id="owlfile" type="file" /></td>
+                    </tr>
+                    <tr>
+                        <td><br />
+                        </td>
+                        <td><input class="btn btn-secondary" type="submit" value="Upload" name="upload"/></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form:form>
         <br>
         <br>
 
@@ -144,23 +153,7 @@
 
         <!-- upload ontology section -->
         <div class="col-md-8">
-            <form:form commandName="formBackingObjects" name="frm1" method="post"
-                       enctype="multipart/form-data" onSubmit="return Validate();">
-                <fieldset><legend>Upload Ontology</legend>
-                    <table>
-                        <tr>
-                            <td><form:label for="fileData" path="fileData">File</form:label><br />
-                            </td>
-                            <td><form:input path="fileData" id="owlfile" type="file" /></td>
-                        </tr>
-                        <tr>
-                            <td><br />
-                            </td>
-                            <td><input class="btn btn-secondary" type="submit" value="Upload" name="upload"/></td>
-                        </tr>
-                    </table>
-                </fieldset>
-            </form:form>
+
         </div>
     </div>
     </div>

@@ -106,7 +106,7 @@ public class OntologyReader {
         BufferedOutputStream outputStream= null;
         try {
             outputStream = new BufferedOutputStream(new FileOutputStream(newOntologyFile));
-            manager.saveOntology(resultedOntology, new RDFXMLOntologyFormat(), outputStream);
+            manager.saveOntology(resultedOntology, (OWLDocumentFormat) new RDFXMLOntologyFormat(), outputStream);
         } catch (FileNotFoundException | OWLOntologyStorageException e) {
             e.printStackTrace();
         }

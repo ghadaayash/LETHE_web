@@ -66,6 +66,32 @@
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
+
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: #303030;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    .button-compute{
+        background-color: #949494; /* Green */
+        padding: 10px 15px;
+
+    }
+
+    .button-compute:hover{
+        background-color: #949494; /* Green */
+        padding: 10px 15px;
+        color:white;
+    }
 </style>
 
 
@@ -78,7 +104,7 @@
         <form:errors path="*"/>
         <form:select path="selectedStr" id="selectedStr" name="selectedStr" class = "fileuploadContent" multiple="true"
 
-                     style="border-radius: 12px; height:200px;width:200px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto; background-color:#fff; margin-left: -10px;">
+                     style="border-radius: 5px; height:200px;width:200px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto; background-color:#fff; margin-left: -10px;">
 
             <c:forEach items="${owlEntitiestems}" var="e">
                 <form:option value="${ss.shortForm(b,e)}">
@@ -94,34 +120,13 @@
             <form:radiobutton path="forgettingMethod" value="alcAbox"/> ALC with ABoxes <br/><br/>
 
             <input type="hidden" name="selectedValue" value="0"/>
-            <input class="btn btn-secondary" type="submit" value="Compute Uniform Interpolant" name="processForm"/>
+            <input class="btn button button-compute" type="submit" value="Compute Uniform Interpolant" name="processForm"/>
         </form:form>
 
-        </div>
-    <div class="col-md-4">
-        <br><br><br>
-        <form:form commandName="formBackingObjects" name="frm2" method="post" action="/entities.html">
-            <input class="btn btn-secondary" type="submit" value="Show Entities" name="showEntities"/>
-        </form:form>
         <br><br>
-
-    </div>
-
-    <div class="col-md-4">
-        <br><br><br><h4>Resulted Ontology</h4>
-        <div style="border-radius: 25px; height:550px;width:400px;border:1px solid #ccc;font:14px/24px Courier New, Courier, monospace;overflow:auto; background-color:#fff">
-            <c:out value="${resultedOntology}"/>
-        </div>
-
-        </div>
-
-<!-- Third ROW -->
-<div class="row">
-    <div class="col-md-2">
-
         <form:form commandName="formBackingObjects" name="frm1" method="post"
                    enctype="multipart/form-data" onSubmit="return Validate();">
-            <fieldset><legend>Upload Ontology</legend>
+            <h4>Upload Ontology</h4>
                 <table>
                     <tr>
                         <td><form:label for="fileData" path="fileData">File</form:label><br />
@@ -131,17 +136,32 @@
                     <tr>
                         <td><br />
                         </td>
-                        <td><input class="btn btn-secondary" type="submit" value="Upload" name="upload"/></td>
+                        <td><input class="btn button button-compute" type="submit" value="Upload" name="upload"/></td>
                     </tr>
                 </table>
-            </fieldset>
-        </form:form>
-        <br>
-        <br>
 
-        <center>
-            <h2><a href="/download.do">Click here to download file</a></h2>
-        </center>
+        </form:form>
+
+        </div>
+    <div class="col-md-4" style="margin-left:50px;">
+        <br><br><br><h4>Resulted Ontology</h4>
+        <div style="border-radius: 5px; height:550px;width:500px;border:1px solid #ccc;font:14px/24px Courier New, Courier, monospace;overflow:auto; background-color:#fff">
+            <c:out value="${resultedOntology}"/>
+        </div>
+
+        <br>
+        <br>
+<center>
+        <a class="btn button button-compute" href="/download.do" >Click here to download file</a>
+</center>
+    </div>
+
+<!-- Third ROW -->
+<div class="row">
+    <div class="col-md-2">
+
+
+
     </div>
 </div>
 

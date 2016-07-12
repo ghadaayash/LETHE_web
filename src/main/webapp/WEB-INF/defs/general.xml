@@ -3,12 +3,44 @@
         "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-    <definition name="common" template="/WEB-INF/layout/classic.jsp">
+    <!-- Uniform Interpolation Template -->
+    <definition name="firstTemplate" template="/WEB-INF/layout/classic-uniform.jsp">
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
     </definition>
 
-    <definition name="index" extends="common">
-        <put-attribute name="title" value="LETHE web analyser" />
-        <put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
+    <definition name="UniformInterpolation" extends="firstTemplate">
+        <put-attribute name="title" value="Uniform Interpolation" />
+        <put-attribute name="body" value="/WEB-INF/jsp/UniformInterpolation.jsp" />
     </definition>
+
+    <!-- Logical Differences Template -->
+    <definition name="secondTemplate" template="/WEB-INF/layout/classic-logical.jsp">
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+
+    <definition name="LogicalDifferences" extends="secondTemplate">
+        <put-attribute name="title" value="Logical Differences" />
+        <put-attribute name="body" value="/WEB-INF/jsp/LogicalDifferences.jsp" />
+    </definition>
+
+    <!-- TBox Abduction Template -->
+    <definition name="thirdTemplate" template="/WEB-INF/layout/classic-abduction.jsp">
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+
+    <definition name="TBoxAbduction" extends="thirdTemplate">
+        <put-attribute name="title" value="TBox Abduction" />
+        <put-attribute name="body" value="/WEB-INF/jsp/TBoxAbduction.jsp" />
+    </definition>
+
+    <!-- test -->
+    <definition name="testTemplate" template="/WEB-INF/layout/classic-test.jsp">
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+
+    <definition name="test" extends="testTemplate">
+        <put-attribute name="title" value="Test" />
+        <put-attribute name="body" value="/WEB-INF/jsp/test.jsp" />
+    </definition>
+
 </tiles-definitions>

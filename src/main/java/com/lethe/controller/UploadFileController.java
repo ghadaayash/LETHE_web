@@ -1,7 +1,7 @@
 package com.lethe.controller;
 
-import com.lethe.form.UploadItem;
-import com.lethe.OntologyHandler.OntologyFile;
+import com.lethe.form.FormBackingObjects;
+import com.lethe.ontology_handler.OntologyFile;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,12 +37,12 @@ public class UploadFileController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getUploadForm(Model model) {
-        model.addAttribute(new UploadItem());
-        return "index";
+        model.addAttribute(new FormBackingObjects());
+        return "UniformInterpolation";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "upload")
-    public String create(@ModelAttribute("uploadItem") UploadItem uploadItem, BindingResult result,
+    public String create(@ModelAttribute("formBackingObjects") FormBackingObjects formBackingObjects, BindingResult result,
                          HttpServletRequest request, HttpServletResponse response,
                          ModelMap modelMap) {
         if (result.hasErrors()) {
@@ -50,19 +50,19 @@ public class UploadFileController {
                 System.err.println("Error: " + error.getCode() + " - "
                         + error.getDefaultMessage());
             }
-            return "index";
+            return "UniformInterpolation";
         }
 
         // Some type of file processing...
         System.err.println("-------------------------------------------");
         OntologyFile uploadOntology = new OntologyFile();
-        MultipartFile file = uploadItem.getFileData();
-        OWLOntology ontologyI = uploadItem.getOwlOntology();
+        MultipartFile file = formBackingObjects.getFileData();
+        OWLOntology ontologyI = formBackingObjects.getOwlOntology();
         OWLOntology ontology = uploadOntology.uplodFile(file, ontologyI);
 
             // ..........................................
             modelMap.addAttribute("uploadFile", ontology);
-        return "index";
+        return "UniformInterpolation";
     }
 
     }

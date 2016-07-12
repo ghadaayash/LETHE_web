@@ -25,6 +25,7 @@
             <url-pattern>*.htm</url-pattern>
             <url-pattern>*.json</url-pattern>
             <url-pattern>*.xml</url-pattern>
+            <url-pattern>*.do</url-pattern>
         </servlet-mapping>
 
 

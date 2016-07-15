@@ -1,17 +1,17 @@
 package com.lethe.conversion;
 
-import com.lethe.form.FormBackingObjects;
+import com.lethe.form.UniformBackingObjects;
 import org.springframework.core.convert.converter.Converter;
 
 /**
  * Created by ghadahalghamdi on 02/07/2016.
  */
-public class StringToUploadItem implements Converter<String, FormBackingObjects> {
+public class StringToUploadItem implements Converter<String, UniformBackingObjects> {
 
     @Override
-    public FormBackingObjects convert(String source) {
+    public UniformBackingObjects convert(String source) {
 
-      //  FormBackingObjects uploadItem = new FormBackingObjects();
+      //  UniformBackingObjects uploadItem = new UniformBackingObjects();
       //  return uploadItem.uploadItem(source);
         return null;
 
@@ -22,7 +22,7 @@ public class StringToUploadItem implements Converter<String, FormBackingObjects>
 /*public class StringToUploadItem extends PropertyEditorSupport {
 
     public void setAsText(String text) {
-        FormBackingObjects uploadItem = new FormBackingObjects();
+        UniformBackingObjects uploadItem = new UniformBackingObjects();
         setValue(uploadItem.uploadItem(text));
     }
 }*/

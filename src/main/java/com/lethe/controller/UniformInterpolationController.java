@@ -1,14 +1,12 @@
 package com.lethe.controller;
 
-import com.lethe.form.FormBackingObjects;
+import com.lethe.form.UniformBackingObjects;
 import com.lethe.lethe.UniformInterpolation;
 import com.lethe.ontology_handler.OntologyFile;
 import com.lethe.ontology_handler.OntologyReader;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
-import org.semanticweb.owlapi.util.ShortFormProvider;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,31 +26,32 @@ import static org.springframework.util.StreamUtils.BUFFER_SIZE;
  */
 
 @Controller
-@SessionAttributes({"uploadFile", "owlEntitiestems", "resultedOntology", "ss", "b"})
+@SessionAttributes({"resultedOntology", "ss", "b"})
 
-public class EntitiesController {
-    BidirectionalShortFormProviderAdapter b;
+public class UniformInterpolationController {
+
     File savedOntology;
-    OntologyFile ss = new OntologyFile();
-    ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+    //OntologyFile ss = new OntologyFile();
+    //ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 
-    @RequestMapping(value = "/selectedEntities", method = RequestMethod.POST, params="processForm")
-    public String processEntities(@ModelAttribute("formBackingObjects") FormBackingObjects formBackingObjects, BindingResult result,
+    @RequestMapping(value = "/uniformInterpolation", method = RequestMethod.POST, params="processForm")
+    public String processEntities(@ModelAttribute("uniformBackingObjects") UniformBackingObjects uniformBackingObjects, BindingResult result,
                                   HttpServletRequest request, HttpServletResponse response,
-                                  ModelMap modelMap){
+                                  ModelMap modelMap, HttpSession session){
 
-        List<String> selectedStr = formBackingObjects.getSelectedStr();
+        List<String> selectedStr = uniformBackingObjects.getSelectedStr();
         //Set<OWLOntology> ontologies = new HashSet<>();
-        OWLOntology ontology = (OWLOntology) modelMap.get("uploadFile");
+        OWLOntology ontology = (OWLOntology) session.getAttribute("uploadFile");
         //ontologies.add(ontology);
         //new
-        BidirectionalShortFormProviderAdapter b = (BidirectionalShortFormProviderAdapter) modelMap.get("b");
+        BidirectionalShortFormProviderAdapter b = (BidirectionalShortFormProviderAdapter) session.getAttribute("b");
+        OntologyFile ss = (OntologyFile) session.getAttribute("ss");
         Set<OWLEntity> entities = ss.entityForm(b,selectedStr);
         System.out.println("String type: " + selectedStr);
         System.out.println("Entity type: " + entities);
         System.out.println("------------------------");
 
-        String selectedMethod = formBackingObjects.getForgettingMethod();
+        String selectedMethod = uniformBackingObjects.getForgettingMethod();
         System.out.println(selectedMethod);
         UniformInterpolation uniformInterpolation = new UniformInterpolation();
         if ("alchTBox".equals(selectedMethod)) {
@@ -82,15 +81,17 @@ public class EntitiesController {
         return "UniformInterpolation";
     }
 
-    @RequestMapping(value = "/download.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadInterpolant.do", method = RequestMethod.GET)
     public void doDownload(HttpServletRequest request,
                            HttpServletResponse response) throws IOException {
 
         String filePath = savedOntology.getAbsolutePath();
         /// / get absolute path of the application
         ServletContext context = request.getSession().getServletContext();
-        String appPath = context.getRealPath("");
+        //String appPath = context.getRealPath("");
         //System.out.println("appPath = " + appPath);
+
+ //make a method that gives the file that we want to download as a parameter, and also takes servletContext,
 
         // construct the complete absolute path of the file
         //String fullPath = appPath + filePath;

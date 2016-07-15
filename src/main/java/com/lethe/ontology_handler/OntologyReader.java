@@ -9,12 +9,16 @@ import org.semanticweb.owlapi.model.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import uk.ac.manchester.cs.owl.owlapi.OWLImmutableOntologyImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyImpl;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static org.semanticweb.owlapi.search.Searcher.annotations;
 import static org.semanticweb.owlapi.vocab.OWLRDFVocabulary.RDFS_LABEL;
@@ -23,8 +27,8 @@ import static org.semanticweb.owlapi.vocab.OWLRDFVocabulary.RDFS_LABEL;
  * Created by ghadahalghamdi on 06/07/2016.
  */
 public class OntologyReader {
-   // private final OWLOntology ontology;
-   // private OWLDataFactory df;
+    // private final OWLOntology ontology;
+    // private OWLDataFactory df;
 
     /*public OntologyReader(OWLOntology ontology, OWLDataFactory df) {
         this.ontology = ontology;
@@ -80,8 +84,7 @@ public class OntologyReader {
         }
         }*/
 
-    public String readFile(File file)
-    {
+    public String readFile(File file) {
         String content = null;
         //File file = new File(filename); //for ex foo.txt
         FileReader reader = null;
@@ -98,19 +101,41 @@ public class OntologyReader {
         return content;
     }
 
-    public File saveOntology (OWLOntology resultedOntology){
+    public File saveOntology(OWLOntology resultedOntology) {
 
-        OWLOntologyManager manager= OWLManager.createOWLOntologyManager();
-        File newOntologyFile=new File("/Users/ghadahalghamdi/Documents/LETHE_web/src/main/webapp/upload/result.owl");
-        newOntologyFile=newOntologyFile.getAbsoluteFile();
-        BufferedOutputStream outputStream= null;
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        File newOntologyFile = new File("/Users/ghadahalghamdi/Documents/LETHE_web/src/main/webapp/upload/result.owl");
+        newOntologyFile = newOntologyFile.getAbsoluteFile();
+        BufferedOutputStream outputStream = null;
         try {
             outputStream = new BufferedOutputStream(new FileOutputStream(newOntologyFile));
-            manager.saveOntology(resultedOntology, (OWLDocumentFormat) new RDFXMLOntologyFormat(), outputStream);
+            manager.saveOntology(resultedOntology, new RDFXMLOntologyFormat(), outputStream);
         } catch (FileNotFoundException | OWLOntologyStorageException e) {
             e.printStackTrace();
         }
 
-    return newOntologyFile;
+        return newOntologyFile;
+    }
+
+    public File saveAxioms(Set<OWLLogicalAxiom> resultedAxioms) {
+
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLDataFactory factory = manager.getOWLDataFactory();
+        File newOntologyFile = new File("/Users/ghadahalghamdi/Documents/LETHE_web/src/main/webapp/upload/newEntailments.owl");
+        newOntologyFile=newOntologyFile.getAbsoluteFile();
+        BufferedOutputStream outputStream = null;
+        try {
+            OWLOntology ontology = manager.createOntology();
+            for (Iterator<OWLLogicalAxiom> axiomIterator = resultedAxioms.iterator(); axiomIterator.hasNext(); ) {
+                OWLAxiom axiom = axiomIterator.next();
+                manager.addAxiom(ontology, axiom);
+                outputStream = new BufferedOutputStream(new FileOutputStream(newOntologyFile));
+                manager.saveOntology(ontology, new OWLXMLOntologyFormat(), outputStream);
+            }
+
+        } catch (FileNotFoundException | OWLOntologyCreationException | OWLOntologyStorageException e) {
+            e.printStackTrace();
+            }
+        return newOntologyFile;
     }
 }

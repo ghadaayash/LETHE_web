@@ -14,22 +14,15 @@ import java.util.Set;
  */
 
 //This class will hold ontology item
-public class FormBackingObjects {
+public class UniformBackingObjects {
+
     private String filename;
     private Set<OWLEntity> owlEntities;
     private CommonsMultipartFile fileData;
     private OWLOntology owlOntology;
     private OWLEntity owlEntity;
     private List<String> selectedStr;
-    private String owlLabel;
     private String forgettingMethod;
-    //private FormBackingObjects uploadItem;
-
-
-
-    /*public FormBackingObjects uploadItem(String s){
-        return uploadItem;
-    }*/
 
     public String getFilename() {
         return filename;
@@ -37,6 +30,14 @@ public class FormBackingObjects {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public Set<OWLEntity> getOwlEntities() {
+        return owlEntities;
+    }
+
+    public void setOwlEntities(Set<OWLEntity> owlEntities) {
+        this.owlEntities = owlEntities;
     }
 
     public CommonsMultipartFile getFileData() {
@@ -55,14 +56,6 @@ public class FormBackingObjects {
         this.owlOntology = owlOntology;
     }
 
-    public Set<OWLEntity> getOwlEntities() {
-        return owlEntities;
-    }
-
-    public void setOwlEntities(Set<OWLEntity> owlEntities) {
-        this.owlEntities = owlEntities;
-    }
-
     public OWLEntity getOwlEntity() {
         return owlEntity;
     }
@@ -79,17 +72,6 @@ public class FormBackingObjects {
         this.selectedStr = selectedStr;
     }
 
-    public String getOwlLabel() {
-        return owlLabel;
-    }
-
-    public void setOwlLabel(String owlLabel) {
-        OntologyFile s = new OntologyFile();
-        BidirectionalShortFormProviderAdapter b = s.haveB();
-        owlLabel = s.shortForm(b,getOwlEntity());
-        this.owlLabel = owlLabel;
-    }
-
     public String getForgettingMethod() {
         return forgettingMethod;
     }
@@ -98,9 +80,8 @@ public class FormBackingObjects {
         this.forgettingMethod = forgettingMethod;
     }
 
-    //public String owlL(OWLEntity entity){
-        //return entity.getIRI().getFragment();
-    //}
+    //private UniformBackingObjects uploadItem;
+
 
 
 }

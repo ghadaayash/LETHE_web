@@ -3,6 +3,18 @@
         "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
+
+    <!-- Index Template -->
+    <definition name="indexTemplate" template="/WEB-INF/layout/classic-index.jsp">
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+    </definition>
+
+    <definition name="index" extends="indexTemplate">
+        <put-attribute name="title" value="LETHE Web Analyser" />
+        <put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
+    </definition>
+
+
     <!-- Uniform Interpolation Template -->
     <definition name="firstTemplate" template="/WEB-INF/layout/classic-uniform.jsp">
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />

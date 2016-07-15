@@ -1,10 +1,10 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: ghadahalghamdi
-  Date: 10/07/2016
-  Time: 23:11
+  Date: 12/07/2016
+  Time: 16:21
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -33,38 +33,42 @@
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300italic' rel='stylesheet' type='text/css'>
 
     <title><tiles:getAsString name="title"/></title>
+    <style>
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: auto;
+            max-width: 680px;
+            padding: 0 15px;
+        }
+        .container .text-muted {
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
 
-    <!-- Static navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background:#002C6A; font: italic 16px/26px Muli, sans-serif; color:#dedede">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="<spring:url value="/"/>">Logical Differences</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href='<spring:url value="/index.html"/>'>Home</a></li>
-                    <li><a href='<spring:url value="/"/>'>About</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-    </nav>
 
     <tiles:insertAttribute name="body"/>
 
     <br><br>
-    <center><tiles:insertAttribute name="footer"/></center>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted"><tiles:insertAttribute name="footer"/></p>
+        </div>
+    </footer>
 
-</div>
+
+
 </body>
 </html>
+
 

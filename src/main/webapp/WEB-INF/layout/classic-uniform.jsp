@@ -36,7 +36,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container-fluid" style="background-color: #dedede">
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top" style="background:#002C6A; font: italic 16px/26px Muli, sans-serif; color:#dedede">
@@ -52,7 +52,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href='<spring:url value="/"/>'>Home</a></li>
+                    <li class="active"><a href='<spring:url value="/index.html"/>'>Home</a></li>
                     <li><a href='<spring:url value="/"/>'>About</a></li>
                 </ul>
             </div><!--/.nav-collapse -->

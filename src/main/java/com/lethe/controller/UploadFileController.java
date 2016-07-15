@@ -1,6 +1,6 @@
 package com.lethe.controller;
 
-import com.lethe.form.FormBackingObjects;
+import com.lethe.form.UniformBackingObjects;
 import com.lethe.ontology_handler.OntologyFile;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -29,7 +29,7 @@ import java.util.Set;
  * Created by ghadahalghamdi on 30/06/2016.
  */
 @Controller
-@SessionAttributes({"uploadFile", "owlEntitiestems", "ss", "b"})
+@SessionAttributes({"owlEntitiestems", "ss", "b"})
 public class UploadFileController {
 
     //new
@@ -49,14 +49,14 @@ public class UploadFileController {
         this.uploadFolderPath = uploadFolderPath;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/uniformInterpolation", method = RequestMethod.GET)
     public String getUploadForm(Model model) {
-        model.addAttribute(new FormBackingObjects());
+        model.addAttribute(new UniformBackingObjects());
         return "UniformInterpolation";
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = "upload")
-    public String create(@ModelAttribute("formBackingObjects") FormBackingObjects formBackingObjects, BindingResult result,
+    @RequestMapping(value = "/uniformInterpolation", method = RequestMethod.POST, params = "upload")
+    public String create(UniformBackingObjects uniformBackingObjects, BindingResult result,
                          HttpServletRequest request, HttpServletResponse response, HttpSession session,
                          ModelMap modelMap) {
         if (result.hasErrors()) {
@@ -70,21 +70,22 @@ public class UploadFileController {
         // Some type of file processing...
         System.err.println("-------------------------------------------");
         OntologyFile uploadOntology = new OntologyFile();
-        MultipartFile file = formBackingObjects.getFileData();
-        OWLOntology ontologyI = formBackingObjects.getOwlOntology();
+        MultipartFile file = uniformBackingObjects.getFileData();
+        OWLOntology ontologyI = uniformBackingObjects.getOwlOntology();
         OWLOntology ontology = uploadOntology.uplodFile(file, ontologyI);
         Set<OWLOntology> ontologies = new HashSet<>();
         ontologies.add(ontology);
         b = new BidirectionalShortFormProviderAdapter(ontologies, shortFormProvider);
         Set<OWLEntity> owlEntitySet;
         owlEntitySet = ontology.getSignature();
-        formBackingObjects.setOwlEntities(owlEntitySet);
+        uniformBackingObjects.setOwlEntities(owlEntitySet);
         session.setAttribute("b",b);
         session.setAttribute("ss",ss);
-        modelMap.addAttribute("owlEntitiestems", formBackingObjects.getOwlEntities());
+        session.setAttribute("uploadFile", ontology);
+        modelMap.addAttribute("owlEntitiestems", uniformBackingObjects.getOwlEntities());
 
             // ..........................................
-        modelMap.addAttribute("uploadFile", ontology);
+
         return "UniformInterpolation";
     }
 

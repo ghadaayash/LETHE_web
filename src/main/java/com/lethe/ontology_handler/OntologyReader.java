@@ -9,8 +9,7 @@ import org.semanticweb.owlapi.model.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import uk.ac.manchester.cs.owl.owlapi.OWLImmutableOntologyImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLOntologyImpl;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,8 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static org.semanticweb.owlapi.search.Searcher.annotations;
-import static org.semanticweb.owlapi.vocab.OWLRDFVocabulary.RDFS_LABEL;
+
 
 /**
  * Created by ghadahalghamdi on 06/07/2016.

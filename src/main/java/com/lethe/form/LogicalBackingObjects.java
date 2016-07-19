@@ -25,6 +25,12 @@ public class LogicalBackingObjects {
     private OWLEntity owlEntity;
     private List<String> selectedStr;
     private String forgettingMethod;
+    private String logicalDifferencesOption;
+    private String signaturesOption;
+    private String newFilename;
+    private CommonsMultipartFile newFileData;
+    private OWLOntology newOwlOntology;
+
 
     public String getFirstFilename() {
         return firstFilename;
@@ -112,5 +118,45 @@ public class LogicalBackingObjects {
 
     public void setSecondOwlOntology(OWLOntology secondOwlOntology) {
         this.secondOwlOntology = secondOwlOntology;
+    }
+
+    public String getLogicalDifferencesOption() {
+        return logicalDifferencesOption;
+    }
+
+    public void setLogicalDifferencesOption(String logicalDifferencesOption) {
+        this.logicalDifferencesOption = logicalDifferencesOption;
+    }
+
+    public String getSignaturesOption() {
+        return signaturesOption;
+    }
+
+    public void setSignaturesOption(String signaturesOption) {
+        this.signaturesOption = signaturesOption;
+    }
+
+    public String getNewFilename() {
+        return newFilename;
+    }
+
+    public void setNewFilename(String newFilename) {
+        this.newFilename = newFilename;
+    }
+
+    public CommonsMultipartFile getNewFileData() {
+        return newFileData;
+    }
+
+    public void setNewFileData(CommonsMultipartFile newFileData) {
+        this.newFileData = newFileData;
+    }
+
+    public OWLOntology getNewOwlOntology() {
+        return newOwlOntology;
+    }
+
+    public void setNewOwlOntology(OWLOntology newOwlOntology) {
+        this.newOwlOntology = newOwlOntology;
     }
 }

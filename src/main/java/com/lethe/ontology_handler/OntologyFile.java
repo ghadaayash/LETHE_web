@@ -55,6 +55,7 @@ public class OntologyFile {
                 }
                 outputStream.close();
                 inputStream.close();
+                //manager.removeOntology(ontology);
             }
 
             // ..........................................

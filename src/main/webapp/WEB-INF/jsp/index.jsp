@@ -93,7 +93,7 @@
              <a class ="button button-logical" href="<spring:url value="/logicalDifferences.html"/>">Logical Differences</a>
         </div>
         <div>
-            <a class ="button button-abduction" href="<spring:url value="/"/>">TBox Abduction</a>
+            <a class ="button button-abduction" href="<spring:url value="/tboxAbduction.html"/>">TBox Abduction</a>
         </div>
     </form>
 

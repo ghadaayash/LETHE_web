@@ -66,25 +66,25 @@
 
     .button-compute{
         background-color: #949494; /* Green */
-        padding: 10px 15px;
+        padding: 6px 8px;
 
     }
 
     .button-upload{
         background-color: #949494; /* Green */
-        padding: 10px 9px;
+        padding: 6px 8px;
 
     }
     .button-upload:hover{
-        background-color: #949494; /* Green */
-        color:white;
+        background-color: #eeeeee; /* Green */
+        color:#949494;
 
     }
 
     .button-compute:hover{
-        background-color: #949494; /* Green */
-        padding: 10px 15px;
-        color:white;
+        background-color: #eeeeee;
+        padding: 6px 8px;
+        color:#949494;
     }
 </style>
 
@@ -96,50 +96,38 @@
         <!-- upload first ontology-->
         <form:form commandName="logicalBackingObjects" name="frm1" method="post"
                    enctype="multipart/form-data" onSubmit="return Validate();">
-            <h4>Upload First Ontology</h4>
-            <table>
-                <tr>
-                    <td><form:label for="firstFileData" path="firstFileData">File</form:label><br />
-                    </td>
-                    <td><form:input path="firstFileData" id="owlfile" type="file" /></td>
-                </tr>
-                <tr>
-                    <td><br />
-                    </td>
-                    <td><center><input class="btn button button-upload" type="submit" value="Upload" name="firstUpload"/></center></td>
-                </tr>
-            </table>
 
-        </form:form>
-<!--for testing-->
-        <c:out value="${firstUploadFile}"/>
+            <!-- <p style="font-weight: bold">Upload first ontology</p>-->
+            <form:label for="firstFileData" path="firstFileData">Upload first ontology</form:label><br />
+            <form:input path="firstFileData" id="owlfile" type="file" />
 
-        <!-- upload second ontology-->
-        <form:form commandName="logicalBackingObjects" name="frm1" method="post"
-                   enctype="multipart/form-data" onSubmit="return Validate();">
-            <h4>Upload Second Ontology</h4>
-            <table>
-                <tr>
-                    <td><form:label for="secondFileData" path="secondFileData">File</form:label><br />
-                    </td>
-                    <td><form:input path="secondFileData" id="owlfile" type="file" /></td>
-                </tr>
-                <tr>
-                    <td><br />
-                    </td>
-                    <td><center><input class="btn button button-upload" type="submit" value="Upload" name="secondUpload"/></center></td>
-                </tr>
-            </table>
+            <!-- upload second ontology-->
+           <!-- <p style="font-weight: bold">Upload second ontology</p>-->
+            <form:label for="secondFileData" path="secondFileData">Upload second ontology</form:label><br />
+            <form:input path="secondFileData" id="owlfile" type="file" /><br />
 
-            <h4>Approximation Level <form:input path="approximationLevel"/></h4>
+            <input class="btn button button-upload" type="submit" value="Upload Ontologies" name="Upload"/>
 
         </form:form>
 
-        <!--for testing-->
-        <c:out value="${secondUploadFile}"/>
+        <form:form commandName="logicalBackingObjects" id="frm3" name="frm0" method="post" action="/logicalDifferences.html">
 
-        <h4>Select Signature</h4>
+        <p style="font-weight: bold">Compute logical differences based on </p>
+        <form:radiobutton path="logicalDifferencesOption" value="commonSig"/> Common Signatures <br/>
+        <form:radiobutton path="logicalDifferencesOption" value="specificSig"/> Specified Signatures <br/>
+
+        <br><p style="font-weight: bold">Get the signatures from </p>
+        <form:radiobutton path="signaturesOption" value="firstOntologysig"/> First Ontology <br/>
+        <form:radiobutton path="signaturesOption" value="secondOntologysig"/> Second Ontology <br/>
+
+            <input class="btn button button-upload" type="submit" value="Submit" name="showSignatures"/>
+
+        </form:form>
+
+
+
         <form:form commandName="logicalBackingObjects" id="frm3" name="frm3" method="post" action="/logicalDifferences.html">
+            <h4>Select Signature</h4>
             <form:errors path="*"/>
             <form:select path="selectedStr" id="selectedStr" name="selectedStr" class = "fileuploadContent" multiple="true"
 
@@ -153,6 +141,7 @@
                 </c:forEach>
             </form:select>
             <br>
+            <h4>Approximation Level <form:input path="approximationLevel"/></h4>
             <br><h4>Forgetting Method </h4>
             <form:radiobutton path="forgettingMethod" value="alchTBox"/> ALCH TBoxes <br/>
             <form:radiobutton path="forgettingMethod" value="shqTbox"/> SHQ TBoxes <br/>
@@ -172,7 +161,7 @@
         <br>
 
         <center>
-            <a class="btn button button-compute" href="/downloadEntailments.do" >Save Resulted Axioms</a>
+            <a class="btn button button-compute" href="/download.do" >Save Resulted Axioms</a>
         </center>
     </div>
 

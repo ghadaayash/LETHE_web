@@ -1,5 +1,4 @@
 <%@ page import="org.semanticweb.owlapi.model.OWLEntity" %>
-<%@ page import="org.openrdf.model.vocabulary.OWL" %>
 <%@ page import="org.semanticweb.owlapi.model.OWLOntology" %>
 <%@ page import="org.semanticweb.owlapi.util.ShortFormProvider" %>
 <%@ page import="org.semanticweb.owlapi.util.SimpleShortFormProvider" %>
@@ -9,6 +8,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Ghada
@@ -78,25 +78,26 @@
 
     .button-compute{
         background-color: #949494; /* Green */
-        padding: 10px 15px;
+        padding: 6px 8px;
 
     }
 
     .button-upload{
         background-color: #949494; /* Green */
-        padding: 10px 9px;
+        padding: 6px 8px;
 
     }
     .button-upload:hover{
-        background-color: #949494; /* Green */
-        color:white;
+        background-color: #eeeeee; /* Green */
+        padding: 6px 8px;
+        color:#949494;
 
     }
 
     .button-compute:hover{
-        background-color: #949494; /* Green */
-        padding: 10px 15px;
-        color:white;
+        background-color: #eeeeee; /* Green */
+        padding: 6px 8px;
+        color:#949494;
     }
 </style>
 
@@ -107,19 +108,10 @@
     <div class="col-md-3" style=""> <br/><br><br>
         <form:form commandName="uniformBackingObjects" name="frm1" method="post"
                    enctype="multipart/form-data" onSubmit="return Validate();">
-            <h4>Upload Ontology</h4>
-            <table>
-                <tr>
-                    <td><form:label for="fileData" path="fileData">File</form:label><br />
-                    </td>
-                    <td><form:input path="fileData" id="owlfile" type="file" /></td>
-                </tr>
-                <tr>
-                    <td><br />
-                    </td>
-                    <td><center><input class="btn button button-upload" type="submit" value="Upload Ontology" name="upload"/></center></td>
-                </tr>
-            </table>
+
+                    <form:label for="fileData" path="fileData">Upload Ontology</form:label>
+                    <form:input path="fileData" id="owlfile" type="file" /><br>
+                    <input class="btn button button-upload" type="submit" value="Upload Ontology" name="upload"/>
 
         </form:form>
         <h4>Select Signature</h4>
@@ -152,12 +144,15 @@
         <div style="border-radius: 5px; height:400px;width:500px;border:1px solid #ccc;font:12px Courier New, Courier, monospace;overflow:auto; background-color:#fff">
             <c:out value="${resultedOntology}"/>
         </div>
-
+        <p><c:out value="${ontology}"/> </p>
+        <p><a href="<spring:url value="/test.html"/>">click here to test OWL2VOWL</a> </p>
+        <br>
         <br>
 
 <center>
-        <a class="btn button button-compute" href="/downloadInterpolant.do" >Save Resulted Ontology</a>
+        <a class="btn button button-compute" href="/download.do" >Save Resulted Ontology</a>
 </center>
+
     </div>
 
 <!-- Third ROW -->

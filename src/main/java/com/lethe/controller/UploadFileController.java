@@ -29,7 +29,6 @@ import java.util.Set;
  * Created by ghadahalghamdi on 30/06/2016.
  */
 @Controller
-@SessionAttributes({"owlEntitiestems", "ss", "b"})
 public class UploadFileController {
 
     //new
@@ -83,8 +82,10 @@ public class UploadFileController {
         session.setAttribute("ss",ss);
         session.setAttribute("uploadFile", ontology);
         modelMap.addAttribute("owlEntitiestems", uniformBackingObjects.getOwlEntities());
-
+        session.removeAttribute("owlEntitiestems");
             // ..........................................
+        session.removeAttribute("ss");
+        session.removeAttribute("b");
 
         return "UniformInterpolation";
     }

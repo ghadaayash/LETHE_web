@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
@@ -28,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.springframework.util.StreamUtils.BUFFER_SIZE;
@@ -37,6 +39,7 @@ import static org.springframework.util.StreamUtils.BUFFER_SIZE;
  */
 
 @Controller
+@SessionAttributes({"firstUploadFile","secondUploadFile","logicalDifferencesOption"})
 public class LogicalDifferencesController {
 
     //new
@@ -44,6 +47,7 @@ public class LogicalDifferencesController {
     OntologyFile ss = new OntologyFile();
     ShortFormProvider shortFormProvider = new SimpleShortFormProvider();
     File newEntailements;
+    OntologyFile uploadOntology = new OntologyFile();
     //-new
 
     @RequestMapping(value = "/logicalDifferences", method = RequestMethod.GET)
@@ -52,8 +56,8 @@ public class LogicalDifferencesController {
         return "LogicalDifferences";
     }
 
-    @RequestMapping(value = "/logicalDifferences", method = RequestMethod.POST, params = "firstUpload")
-    public String uploadFirstFile(LogicalBackingObjects logicalBackingObjects, BindingResult result,
+    @RequestMapping(value = "/logicalDifferences", method = RequestMethod.POST, params = "Upload")
+    public String uploadOntologies(LogicalBackingObjects logicalBackingObjects, BindingResult result,
                                   HttpServletRequest request, HttpServletResponse response, HttpSession session,
                                   ModelMap modelMap) {
         if (result.hasErrors()) {
@@ -63,53 +67,63 @@ public class LogicalDifferencesController {
             }
             return "LogicalDifferences";
         }
+        //FIRST MAKE THE USER UPLOAD ALL THE ONTOLOGIES,
+        // THEN MAKE HIM or HER CHOOSE WHICH ONTOLOGY TO GET THE SIGNATURES FROM
 
         System.err.println("-------------------------------------------");
-        OntologyFile uploadOntology = new OntologyFile();
-        MultipartFile file = logicalBackingObjects.getFirstFileData();
+
+        MultipartFile firstFileDatafile = logicalBackingObjects.getFirstFileData();
+        MultipartFile secondFileDatafile = logicalBackingObjects.getSecondFileData();
         OWLOntology ontologyI = logicalBackingObjects.getFirstOwlOntology();
-        OWLOntology ontology = uploadOntology.uplodFile(file, ontologyI);
-        //Set<OWLOntology> ontologies = new HashSet<>();
-        //ontologies.add(ontology);
-        //b = new BidirectionalShortFormProviderAdapter(ontologies, shortFormProvider);
-        //Set<OWLEntity> owlEntitySet;
-        //owlEntitySet = ontology.getSignature();
-        //logicalBackingObjects.setOwlEntities(owlEntitySet);
-        //session.setAttribute("b",b);
-        //session.setAttribute("ss",ss);
-        session.setAttribute("firstUploadFile", ontology);
-        //modelMap.addAttribute("owlEntitiestems", logicalBackingObjects.getOwlEntities());
+        OWLOntology firstOntology = uploadOntology.uplodFile(firstFileDatafile, ontologyI);
+        OWLOntology ontologyI2 = logicalBackingObjects.getSecondOwlOntology();
+        OWLOntology secondOntology = uploadOntology.uplodFile(secondFileDatafile, ontologyI2);
+        session.setAttribute("firstUploadFile", firstOntology);
+        session.setAttribute("secondUploadFile", secondOntology);
+        System.out.println("------------first ontology: " + firstOntology);
+        System.out.println("------------second ontology: " + secondOntology);
 
         return "LogicalDifferences";
     }
 
-    @RequestMapping(value = "/logicalDifferences", method = RequestMethod.POST, params = "secondUpload")
-    public String uploadSecondFile(LogicalBackingObjects logicalBackingObjects, BindingResult result,
-                                  HttpServletRequest request, HttpServletResponse response, HttpSession session,
-                                  ModelMap modelMap) {
-        if (result.hasErrors()) {
-            for (ObjectError error : result.getAllErrors()) {
-                System.err.println("Error: " + error.getCode() + " - "
-                        + error.getDefaultMessage());
-            }
-            return "LogicalDifferences";
-        }
+    @RequestMapping(value = "/logicalDifferences", method = RequestMethod.POST, params = "showSignatures")
+    public String showSignatures(LogicalBackingObjects logicalBackingObjects, BindingResult result,
+                                 HttpServletRequest request, HttpServletResponse response, HttpSession session,
+                                 ModelMap modelMap){
+        OWLOntology firstOntology = (OWLOntology) session.getAttribute("firstUploadFile");
+        OWLOntology secondOntology = (OWLOntology) session.getAttribute("secondUploadFile");
+        System.out.println("--------" + firstOntology);
+        System.out.println("--------" + secondOntology);
+        String logicalDifferencesOption = logicalBackingObjects.getLogicalDifferencesOption();
+        session.setAttribute("logicalDifferencesOption", logicalDifferencesOption);
+        if ("specificSig".equals(logicalDifferencesOption)) {
+            String signaturesOption = logicalBackingObjects.getSignaturesOption();
+            if ("firstOntologysig".equals(signaturesOption)) {
+                Set<OWLOntology> firstontologies = new HashSet<>();
+                firstontologies.add(firstOntology);
+                b = new BidirectionalShortFormProviderAdapter(firstontologies, shortFormProvider);
+                Set<OWLEntity> owlEntitySet;
+                owlEntitySet = firstOntology.getSignature();
+                logicalBackingObjects.setOwlEntities(owlEntitySet);
+                session.setAttribute("b", b);
+                session.setAttribute("ss", ss);
+                session.setAttribute("firstUploadFile", firstOntology);
+                modelMap.addAttribute("owlEntitiestems", logicalBackingObjects.getOwlEntities());
+            } else if ("secondOntologysig".equals(signaturesOption)) {
+                Set<OWLOntology> secondontologies = new HashSet<>();
+                secondontologies.add(secondOntology);
+                b = new BidirectionalShortFormProviderAdapter(secondontologies, shortFormProvider);
+                Set<OWLEntity> owlEntitySet;
+                owlEntitySet = secondOntology.getSignature();
+                logicalBackingObjects.setOwlEntities(owlEntitySet);
+                session.setAttribute("b", b);
+                session.setAttribute("ss", ss);
+                session.setAttribute("secondUploadFile", secondOntology);
+                modelMap.addAttribute("owlEntitiestems", logicalBackingObjects.getOwlEntities());
 
-        System.err.println("-------------------------------------------");
-        OntologyFile uploadOntology = new OntologyFile();
-        MultipartFile file = logicalBackingObjects.getSecondFileData();
-        OWLOntology ontologyI = logicalBackingObjects.getSecondOwlOntology();
-        OWLOntology ontology = uploadOntology.uplodFile(file, ontologyI);
-        //Set<OWLOntology> ontologies = new HashSet<>();
-        //ontologies.add(ontology);
-        //b = new BidirectionalShortFormProviderAdapter(ontologies, shortFormProvider);
-        //Set<OWLEntity> owlEntitySet;
-        //owlEntitySet = ontology.getSignature();
-        //logicalBackingObjects.setOwlEntities(owlEntitySet);
-        //session.setAttribute("b",b);
-        //session.setAttribute("ss",ss);
-        session.setAttribute("secondUploadFile", ontology);
-        //modelMap.addAttribute("owlEntitiestems", logicalBackingObjects.getOwlEntities());
+            }
+
+        }
 
         return "LogicalDifferences";
     }
@@ -121,77 +135,68 @@ public class LogicalDifferencesController {
 
         OWLOntology firstOntology = (OWLOntology) session.getAttribute("firstUploadFile");
         OWLOntology secondOntology = (OWLOntology) session.getAttribute("secondUploadFile");
+
         int approximationLevel = logicalBackingObjects.getApproximationLevel();
         String forgettingMethod = logicalBackingObjects.getForgettingMethod();
         System.out.println(forgettingMethod);
 
+
+        //prepare everything,  if the user selected strings from signatures box:
+
+        Set<OWLLogicalAxiom> axioms = new HashSet<>();
         LogicalDifferences logicalDifferences = new LogicalDifferences();
+        String logicalDifferencesOption = (String) session.getAttribute("logicalDifferencesOption");
+        System.out.println("----------" + logicalDifferencesOption);
         if("alchTBox".equals(forgettingMethod)){
-            Set<OWLLogicalAxiom> axioms = logicalDifferences.computeDiff_coms_alch(firstOntology, secondOntology, approximationLevel);
-            OntologyReader reader = new OntologyReader();
-            newEntailements = reader.saveAxioms(axioms);
-            String content = reader.readFile(newEntailements);
-            modelMap.addAttribute("resultedAxioms", content);
+           if("commonSig".equals(logicalDifferencesOption)){
+               System.out.println("----------" + logicalDifferencesOption);
+               axioms = logicalDifferences.computeDiff_coms_alch(firstOntology, secondOntology, approximationLevel);
+           }else{
+               List<String> selectedStr = logicalBackingObjects.getSelectedStr();
+               BidirectionalShortFormProviderAdapter b = (BidirectionalShortFormProviderAdapter) session.getAttribute("b");
+               OntologyFile ss = (OntologyFile) session.getAttribute("ss");
+               Set<OWLEntity> entities = ss.entityForm(b,selectedStr);
+               System.out.println("String type: " + selectedStr);
+               System.out.println("Entity type: " + entities);
+               System.out.println("------------------------");
+               System.out.println(selectedStr);
+               axioms = logicalDifferences.computeDiff_s_alch(firstOntology, secondOntology, entities, approximationLevel);
+           }
 
         }else if ("shqTbox".equals(forgettingMethod)){
-            Set<OWLLogicalAxiom> axioms = logicalDifferences.computeDiff_coms_shq(firstOntology, secondOntology, approximationLevel);
-            OntologyReader reader = new OntologyReader();
-            newEntailements = reader.saveAxioms(axioms);
-            String content = reader.readFile(newEntailements);
-            modelMap.addAttribute("resultedAxioms", content);
+            if("commonSig".equals(logicalDifferencesOption)){
+                axioms = logicalDifferences.computeDiff_coms_shq(firstOntology, secondOntology, approximationLevel);
+            }else{
+                List<String> selectedStr = logicalBackingObjects.getSelectedStr();
+                BidirectionalShortFormProviderAdapter b = (BidirectionalShortFormProviderAdapter) session.getAttribute("b");
+                OntologyFile ss = (OntologyFile) session.getAttribute("ss");
+                Set<OWLEntity> entities = ss.entityForm(b,selectedStr);
+                System.out.println("String type: " + selectedStr);
+                System.out.println("Entity type: " + entities);
+                System.out.println("------------------------");
+                axioms = logicalDifferences.computeDiff_s_shq(firstOntology, secondOntology, entities, approximationLevel);
+            }
 
         }else if ("alcAbox".equals(forgettingMethod)){
-            Set<OWLLogicalAxiom> axioms = logicalDifferences.computeDiff_coms_alc(firstOntology, secondOntology, approximationLevel);
-            OntologyReader reader = new OntologyReader();
-            newEntailements = reader.saveAxioms(axioms);
-            String content = reader.readFile(newEntailements);
-            modelMap.addAttribute("resultedAxioms", content);
+            if("commonSig".equals(logicalDifferencesOption)){
+                axioms = logicalDifferences.computeDiff_coms_alc(firstOntology, secondOntology, approximationLevel);
+            }else{
+                List<String> selectedStr = logicalBackingObjects.getSelectedStr();
+                BidirectionalShortFormProviderAdapter b = (BidirectionalShortFormProviderAdapter) session.getAttribute("b");
+                OntologyFile ss = (OntologyFile) session.getAttribute("ss");
+                Set<OWLEntity> entities = ss.entityForm(b,selectedStr);
+                System.out.println("String type: " + selectedStr);
+                System.out.println("Entity type: " + entities);
+                System.out.println("------------------------");
+                axioms = logicalDifferences.computeDiff_s_alc(firstOntology, secondOntology, entities, approximationLevel);
+            }
         }
+
+        OntologyReader reader = new OntologyReader();
+        newEntailements = reader.saveAxioms(axioms);
+        session.setAttribute("downloadFile", newEntailements);
+        String content = reader.readFile(newEntailements);
+        modelMap.addAttribute("resultedAxioms", content);
         return "LogicalDifferences";
     }
-
-    @RequestMapping(value = "/downloadEntailments.do", method = RequestMethod.GET)
-    public void doDownload(HttpServletRequest request,
-                           HttpServletResponse response) throws IOException {
-
-        String filePath = newEntailements.getAbsolutePath();
-        ServletContext context = request.getSession().getServletContext();
-        String fullPath = filePath;
-        File downloadFile = new File(fullPath);
-        FileInputStream inputStream = new FileInputStream(downloadFile);
-
-        // get MIME type of the file
-        String mimeType = context.getMimeType(fullPath);
-        if (mimeType == null) {
-            // set to binary type if MIME mapping not found
-            mimeType = "application/octet-stream";
-        }
-        System.out.println("MIME type: " + mimeType);
-
-        // set content attributes for the response
-        response.setContentType(mimeType);
-        response.setContentLength((int) downloadFile.length());
-
-        // set headers for the response
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"",
-                downloadFile.getName());
-        response.setHeader(headerKey, headerValue);
-
-        // get output stream of the response
-        OutputStream outStream = response.getOutputStream();
-
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int bytesRead = -1;
-
-        // write bytes read from the input stream into the output stream
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outStream.write(buffer, 0, bytesRead);
-        }
-
-        inputStream.close();
-        outStream.close();
-
-    }
-
 }

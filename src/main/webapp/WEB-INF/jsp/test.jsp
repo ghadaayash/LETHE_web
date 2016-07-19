@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: ghadahalghamdi
@@ -24,7 +25,7 @@
         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" style="background-color:red;">Span 5</div>
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="background-color:blue">Span 3</div>
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-2" style="padding:0px">
-            <div class="short-div" style="background-color:green">Span 2</div>
+            <div class="short-div" style="background-color:green"><c:out value="${test}"/></div>
             <div class="short-div" style="background-color:purple">Span 2</div>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-2" style="background-color:yellow">Span 2</div>

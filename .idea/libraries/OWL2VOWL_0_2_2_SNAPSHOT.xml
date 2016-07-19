@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="OWL2VOWL-0.2.2-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../MSc_Project/ontology_programming/OWL2VOWL-master/target/OWL2VOWL-0.2.2-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

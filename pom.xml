@@ -136,7 +136,7 @@
         <dependency>
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-distribution</artifactId>
-            <version>4.1.0</version>
+            <version>3.4.5</version>
         </dependency>
 
         <!--
@@ -229,6 +229,18 @@
             <groupId>org.visualdataweb.vowl.owl2vowl</groupId>
             <artifactId>OWL2VOWL</artifactId>
             <version>0.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.21</version>
         </dependency>
 
     </dependencies>

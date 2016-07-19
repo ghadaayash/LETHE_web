@@ -36,7 +36,7 @@
 </head>
 <body>
 
-<div class="container-fluid" style="background-color: #dedede">
+<div class="container" style="">
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top" style="background:#002C6A; font: italic 16px/26px Muli, sans-serif; color:#dedede">

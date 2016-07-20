@@ -1,11 +1,15 @@
 package com.lethe.ontology_handler;
 
+import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxOWLParser;
+import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParser;
+import org.coode.owlapi.functionalparser.ParseException;
 import org.coode.owlapi.obo12.parser.OBO12DocumentFormat;
+import org.coode.owlapi.owlxmlparser.OWLXMLParser;
+import org.coode.owlapi.rdfxml.parser.RDFXMLParser;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.io.*;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -14,73 +18,13 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import java.util.*;
 
 
 /**
  * Created by ghadahalghamdi on 06/07/2016.
  */
 public class OntologyReader {
-    // private final OWLOntology ontology;
-    // private OWLDataFactory df;
-
-    /*public OntologyReader(OWLOntology ontology, OWLDataFactory df) {
-        this.ontology = ontology;
-        this.df = df;
-    }
-
-    public void parseOntology()
-            throws OWLOntologyCreationException {
-
-        for (OWLClass cls : ontology.getClassesInSignature()) {
-            String id = cls.getIRI().toString();
-            String label = get(cls, RDFS_LABEL.toString()).get(0);
-            System.out.println(label + " [" + id + "]");
-        }
-    }
-
-    private List<String> get(OWLClass clazz, String property) {
-        List<String> ret = new ArrayList<>();
-
-        final OWLAnnotationProperty owlProperty = df
-                .getOWLAnnotationProperty(IRI.create(property));
-        for (OWLOntology o : ontology.getImportsClosure()) {
-            for (OWLAnnotation annotation : annotations(
-                    o.getAnnotationAssertionAxioms(clazz.getIRI()), owlProperty)) {
-                if (annotation.getValue() instanceof OWLLiteral) {
-                    OWLLiteral val = (OWLLiteral) annotation.getValue();
-                    ret.add(val.getLiteral());
-                }
-            }
-        }
-        return ret;
-    }*/
-
-    /*public void testParse(InputStream s){
-        try {
-        DocumentBuilderFactory factory =
-                DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        //this method: builder.parse(file) take as parameter File file; can take 	parse(InputStream is),
-        Document doc = builder.parse(s);
-
-        NodeList list = doc.getElementsByTagName("*");
-        System.out.println(" Elements: ");
-           // System.out.println(doc.toString());
-        for (int i=0; i<list.getLength(); i++) {
-
-            Element element = (Element)list.item(i);
-            System.out.println(element.getNodeName());
-        }
-    } catch (Exception e) {
-            e.getMessage();
-        }
-        }*/
 
     public String readFile(File file) {
         String content = null;
@@ -135,5 +79,38 @@ public class OntologyReader {
             e.printStackTrace();
             }
         return newOntologyFile;
+    }
+
+    public Set<OWLAxiom> fromStringtoOWLAxiom(List<String> axiomstrings){
+
+        Set<OWLAxiom> owlAxioms = new HashSet<>();
+        try{
+            OWLOntologyManager translationManager = OWLManager.createOWLOntologyManager();
+            OWLOntology ontology = translationManager.createOntology();
+            DefaultPrefixManager nsm = new DefaultPrefixManager();
+        for (Iterator iterator = axiomstrings.iterator(); iterator.hasNext(); ){
+            String axiomstring = (String) iterator.next();
+            InputStream in = new ByteArrayInputStream(axiomstring.getBytes());
+            OWLFunctionalSyntaxParser parser = new OWLFunctionalSyntaxParser(in);
+            parser.setUp(ontology, new OWLOntologyLoaderConfiguration());
+            parser.setPrefixes(nsm);
+            OWLAxiom axiom = parser.Axiom();
+            //owlAxioms.add(axiom);
+            translationManager.addAxiom(ontology, axiom);
+        }   owlAxioms = ontology.getTBoxAxioms(false);
+    }catch (OWLOntologyCreationException | ParseException e){e.printStackTrace();}
+
+        return owlAxioms;
+    }
+
+    public File saveText(String content){
+        File file = new File("/Users/ghadahalghamdi/Documents/LETHE_web/src/main/webapp/upload/explanation.owl");
+        try {
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+        }catch (IOException e){e.printStackTrace();}
+        return file;
     }
 }

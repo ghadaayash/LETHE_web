@@ -1,10 +1,3 @@
-<%@ page import="org.semanticweb.owlapi.model.OWLEntity" %>
-<%@ page import="org.semanticweb.owlapi.model.OWLOntology" %>
-<%@ page import="org.semanticweb.owlapi.util.ShortFormProvider" %>
-<%@ page import="org.semanticweb.owlapi.util.SimpleShortFormProvider" %>
-<%@ page import="org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter" %>
-<%@ page import="java.util.Set" %>
-<%@ page import="java.util.HashSet" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags/form" %>

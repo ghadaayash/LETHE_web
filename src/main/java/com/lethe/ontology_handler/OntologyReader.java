@@ -48,11 +48,14 @@ public class OntologyReader {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         File newOntologyFile = new File("/Users/ghadahalghamdi/Documents/LETHE_web/src/main/webapp/upload/result.owl");
         newOntologyFile = newOntologyFile.getAbsoluteFile();
-        BufferedOutputStream outputStream = null;
         try {
-            outputStream = new BufferedOutputStream(new FileOutputStream(newOntologyFile));
-            manager.saveOntology(resultedOntology, new RDFXMLOntologyFormat(), outputStream);
-        } catch (FileNotFoundException | OWLOntologyStorageException e) {
+            //outputStream = new BufferedOutputStream(new FileOutputStream(newOntologyFile));
+            manager.saveOntology(resultedOntology, new RDFXMLOntologyFormat(), IRI.create(newOntologyFile.toURI()));
+            //OWLOntologyManager manager2 = resultedOntology.getOWLOntologyManager();
+            //IRI iri = manager2.getOntologyDocumentIRI(resultedOntology);
+            //IRI iri = manager.getOntologyDocumentIRI(resultedOntology);
+            //System.out.println("\n______" + iri.toString());
+        } catch (OWLOntologyStorageException e) {
             e.printStackTrace();
         }
 
@@ -62,20 +65,17 @@ public class OntologyReader {
     public File saveAxioms(Set<OWLLogicalAxiom> resultedAxioms) {
 
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        OWLDataFactory factory = manager.getOWLDataFactory();
         File newOntologyFile = new File("/Users/ghadahalghamdi/Documents/LETHE_web/src/main/webapp/upload/newEntailments.owl");
         newOntologyFile=newOntologyFile.getAbsoluteFile();
-        BufferedOutputStream outputStream = null;
         try {
             OWLOntology ontology = manager.createOntology();
             for (Iterator<OWLLogicalAxiom> axiomIterator = resultedAxioms.iterator(); axiomIterator.hasNext(); ) {
                 OWLAxiom axiom = axiomIterator.next();
                 manager.addAxiom(ontology, axiom);
-                outputStream = new BufferedOutputStream(new FileOutputStream(newOntologyFile));
-                manager.saveOntology(ontology, new OWLXMLOntologyFormat(), outputStream);
+                manager.saveOntology(ontology, new OWLXMLOntologyFormat(), IRI.create(newOntologyFile.toURI()));
             }
 
-        } catch (FileNotFoundException | OWLOntologyCreationException | OWLOntologyStorageException e) {
+        } catch ( OWLOntologyCreationException | OWLOntologyStorageException e) {
             e.printStackTrace();
             }
         return newOntologyFile;

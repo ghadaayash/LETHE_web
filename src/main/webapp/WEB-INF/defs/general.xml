@@ -45,14 +45,11 @@
         <put-attribute name="body" value="/WEB-INF/jsp/TBoxAbduction.jsp" />
     </definition>
 
-    <!-- test -->
-    <definition name="testTemplate" template="/WEB-INF/layout/classic-test.jsp">
+    <!-- test-->
+    <definition name="visualisePage" template="/WEB-INF/layout/classic-test.jsp">
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
-    </definition>
-
-    <definition name="test" extends="testTemplate">
-        <put-attribute name="title" value="Test" />
-        <put-attribute name="body" value="/WEB-INF/jsp/test.jsp" />
+        <put-attribute name="title" value="Test-WebVOWL" />
+        <put-attribute name="body" value="/WEB-INF/jsp/visualisePage.jsp" />
     </definition>
 
 </tiles-definitions>

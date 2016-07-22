@@ -4,9 +4,9 @@ import com.lethe.form.LogicalBackingObjects;
 import com.lethe.lethe.LogicalDifferences;
 import com.lethe.ontology_handler.OntologyFile;
 import com.lethe.ontology_handler.OntologyReader;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLLogicalAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
+import de.uni_stuttgart.vis.vowl.owl2vowl.Owl2Vowl;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
@@ -194,6 +194,17 @@ public class LogicalDifferencesController {
 
         OntologyReader reader = new OntologyReader();
         newEntailements = reader.saveAxioms(axioms);
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        try {
+            OWLOntology newontology = manager.loadOntologyFromOntologyDocument(newEntailements.getAbsoluteFile());
+            IRI iri = manager.getOntologyDocumentIRI(newontology);
+            System.out.println("\n______" + iri.toString());
+            Owl2Vowl owl2Vowl = new Owl2Vowl(newontology, iri.toString());
+            String s = owl2Vowl.getJsonAsString();
+            System.out.println("______" + s);
+        } catch (OWLOntologyCreationException e) {
+            e.printStackTrace();
+        }
         session.setAttribute("downloadFile", newEntailements);
         String content = reader.readFile(newEntailements);
         modelMap.addAttribute("resultedAxioms", content);

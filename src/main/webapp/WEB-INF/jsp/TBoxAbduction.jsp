@@ -130,7 +130,7 @@
             <c:out value="${explanations}"/>
         </div>
         <p><c:out value="${ontology}"/> </p>
-        <p><a href="<spring:url value="/test.html"/>">click here to test OWL2VOWL</a> </p>
+      
         <br>
         <br>
 

@@ -82,10 +82,10 @@ public class UploadFileController {
         session.setAttribute("ss",ss);
         session.setAttribute("uploadFile", ontology);
         modelMap.addAttribute("owlEntitiestems", uniformBackingObjects.getOwlEntities());
-        session.removeAttribute("owlEntitiestems");
+        //session.removeAttribute("owlEntitiestems");
             // ..........................................
-        session.removeAttribute("ss");
-        session.removeAttribute("b");
+        //session.removeAttribute("ss");
+        //session.removeAttribute("b");
 
         return "UniformInterpolation";
     }

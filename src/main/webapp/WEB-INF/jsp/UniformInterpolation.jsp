@@ -13,40 +13,7 @@
 <%@page language="java" session="true" %>
 
 <!--Apply this function to validate owl, rdf files -->
-<script language="JavaScript">
-    function Validate()
-    {
-        var owlfile =document.getElementById("owlfile").value;
-        if(owlfile!=''){
-            var checkowl = owlfile.toLowerCase();
-            if (!checkowl.match(/(\.owl|\.rdf)$/)){
-                alert("Please enter  OWL File Extensions .owl,.rdf");
-                document.getElementById("owlfile").focus();
-                return false;
-            }
-        }
-        return true;
-    }
 
-    function SubmitValue(){
-// This Function provides you to assign the selectedindex to a form variable which
-//would come as request value at time of reloading
-        document.frm3.selectedValue.value=document.frm3.selectedStr.selectedIndex;
-        //alert(document.f1.slvalue.options[document.f1.selectedValue.value].value);
-        //alert("rav");
-        document.frm3.submit();
-    }
-
-    function retainValues(){
-
-        var value1 =<%=request.getParameter("selectedValue")%>;
-        if(value1!=null)
-        {document.frm3.selectedStr.selectedIndex=value1;
-            //alert(value1);
-        }
-
-    }
-</script>
 <style>
 
     .rowFullWidth
@@ -100,7 +67,7 @@
     <!-- signatures box -->
     <div class="col-md-3" style=""> <br/><br><br>
         <form:form commandName="uniformBackingObjects" name="frm1" method="post"
-                   enctype="multipart/form-data" onSubmit="return Validate();">
+                   enctype="multipart/form-data">
 
                     <form:label for="fileData" path="fileData">Upload Ontology</form:label>
                     <form:input path="fileData" id="owlfile" type="file" /><br>
@@ -137,8 +104,8 @@
         <div style="border-radius: 5px; height:400px;width:500px;border:1px solid #ccc;font:12px Courier New, Courier, monospace;overflow:auto; background-color:#fff">
             <c:out value="${resultedOntology}"/>
         </div>
-        <p><c:out value="${ontology}"/> </p>
-        <p><a href="<spring:url value="/test.html"/>">click here to test OWL2VOWL</a> </p>
+
+
         <br>
         <br>
 

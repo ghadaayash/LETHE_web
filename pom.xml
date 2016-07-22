@@ -9,6 +9,12 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <maven-war-plugin.version>2.4</maven-war-plugin.version>
+        <org.springframework.version>4.3.0.RELEASE</org.springframework.version>
+        <apache.tiles>3.0.3</apache.tiles>
+    </properties>
+
     <build>
     <plugins>
         <plugin>
@@ -20,14 +26,67 @@
                 <target>1.8</target>
             </configuration>
         </plugin>
+
+        <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+
+
+        </plugin>
+
+        <!-- Node plugin -->
+        <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>0.0.22</version>
+        <executions>
+        <!-- Instal Node and npm -->
+        <execution>
+            <id>install-node-npm</id>
+            <goals>
+                <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+                <nodeVersion>v0.10.32</nodeVersion>
+                <npmVersion>2.1.8</npmVersion>
+            </configuration>
+        </execution>
+        <!-- Install npm modules -->
+        <execution>
+            <id>npm-install-modules</id>
+            <goals>
+                <goal>npm</goal>
+            </goals>
+        </execution>
+        <!-- Package the Grunt distribution -->
+        <execution>
+            <id>grunt-dist</id>
+            <goals>
+                <goal>grunt</goal>
+            </goals>
+            <configuration>
+                <arguments>dist</arguments>
+            </configuration>
+        </execution>
+        <!-- Execute Karma tests -->
+        <execution>
+            <id>karma-test</id>
+            <phase>test</phase>
+            <goals>
+                <goal>karma</goal>
+            </goals>
+            <configuration>
+                <karmaConfPath>/Users/ghadahalghamdi/Documents/LETHE_web/test/karma.conf.js</karmaConfPath>
+            </configuration>
+        </execution>
+        </executions>
+        </plugin>
+
     </plugins>
     </build>
 
     <!-- Shared version number properties -->
-    <properties>
-        <org.springframework.version>4.3.0.RELEASE</org.springframework.version>
-        <apache.tiles>3.0.3</apache.tiles>
-    </properties>
 
     <dependencies>
         <!--
@@ -194,13 +253,6 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>2.2.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
@@ -241,6 +293,18 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.7.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.bringking</groupId>
+            <artifactId>requirejs-maven-plugin</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>4.3.1.RELEASE</version>
         </dependency>
 
     </dependencies>
